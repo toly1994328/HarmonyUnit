@@ -4,18 +4,26 @@ struct Index {
   @State message: string = '鸿蒙纪元';
 
   build() {
-    RelativeContainer() {
-      Text(this.message)
-        .id('HelloWorld')
-        .fontSize(24)
-        .fontColor('#0a59f7')
+    Column() {
+      Text('计数器')
+        .fontSize(28)
         .fontWeight(FontWeight.Bold)
-        .alignRules({
-          center: { anchor: '__container__', align: VerticalAlign.Top },
-          middle: { anchor: '__container__', align: HorizontalAlign.Center }
-        })
+        .margin({ top: 20, left: 20 })
+      Column() {
+        Text('下面是你点击按钮的次数:')
+          .fontSize(18)
+        Text('0')
+          .fontSize(36)
+          .fontColor('#2e3032')
+          .margin({ top: 10 })
+      }
+      .width('100%')
+      .height('100%')
+      .justifyContent(FlexAlign.Center)
     }
-    .height('100%')
+    .alignItems(HorizontalAlign.Start)
     .width('100%')
+    .height('100%')
   }
 }
+
