@@ -3,6 +3,11 @@
 struct Index {
   @State counter: number = 0;
 
+  @StorageProp('bottomRectHeight')
+  bottomRectHeight: number = 0;
+  @StorageProp('topRectHeight')
+  topRectHeight: number = 0;
+
   increment(): void {
     this.counter++;
   }
@@ -58,22 +63,23 @@ struct Index {
       .margin({ right: 20, bottom: 16 })
       .backgroundColor($r('app.color.theme_color'))
       .onClick(() => this.counter++)
-    }.alignContent(Alignment.BottomEnd)
-
+    }
+    .alignContent(Alignment.BottomEnd)
+    .padding({ bottom: px2vp(this.topRectHeight) })
   }
 }
 
 @Component
 struct AppBar {
   private title: string | Resource = '';
+  @StorageProp('topRectHeight')
+  topRectHeight: number = 0;
 
   @Builder
-  leadingBuilder() {
-  }
+  leadingBuilder() {}
 
   @Builder
-  tailingBuilder() {
-  }
+  tailingBuilder() {}
 
   @BuilderParam leading: () => void = this.leadingBuilder;
   @BuilderParam tailing: () => void = this.tailingBuilder;
@@ -88,8 +94,8 @@ struct AppBar {
     }
     .backgroundColor($r('app.color.theme_color'))
     .width('100%')
-    .height(56)
-    .padding({ left: 8, right: 8 })
+    .height(56+ px2vp(this.topRectHeight))
+    .padding({ left: 8, right: 8,top: px2vp(this.topRectHeight) })
     .justifyContent(FlexAlign.SpaceBetween)
   }
 }
