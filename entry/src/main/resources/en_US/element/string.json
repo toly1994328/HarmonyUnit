@@ -11,6 +11,14 @@
     {
       "name": "EntryAbility_label",
       "value": "label"
+    },
+    {
+      "name": "counter_title",
+      "value": "Counter"
+    },
+    {
+      "name": "counter_tips",
+      "value": "You have pushed the button this many times:"
     }
   ]
 }

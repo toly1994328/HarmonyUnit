@@ -7,32 +7,35 @@ struct Index {
     this.counter++;
   }
 
-
   @Builder
   tailing() {
-    SymbolGlyph($r('sys.symbol.dot_grid_1x2'))
-      .fontSize(24)
-      .fontColor([Color.White])
-      .fontWeight(FontWeight.Bold)
+    Button(){
+      Image($r('app.media.more'))
+        .width(24).height(24)
+        .fillColor(Color.White)
+    }
+    .width(36).height(36)
+    .backgroundColor(Color.Transparent)
   }
 
   @Builder
   leading() {
-    SymbolGlyph($r('sys.symbol.access_card'))
-      .fontSize(24)
-      .fontColor([Color.White])
-      .fontWeight(FontWeight.Bold)
+    Button(){
+      Image($r('app.media.logo')).width(30).height(30)
+    }
+    .width(36).height(36)
+    .backgroundColor(Color.Transparent)
   }
 
   build() {
     Stack() {
       Column() {
-        AppBar({ title: '计数器', leading: this.leading, tailing: this.tailing })
+        AppBar({ title: $r('app.string.counter_title'), leading: this.leading, tailing: this.tailing })
         Column() {
-          Text('下面是你点击按钮的次数:')
-            .fontSize(18)
+          Text($r('app.string.counter_tips'))
+            .fontSize($r('app.float.counter_desc_size'))
           Text(this.counter.toString())
-            .fontSize(36)
+            .fontSize($r('app.float.counter_value_size'))
             .fontColor('#2e3032')
             .margin({ top: 10 })
         }
@@ -53,7 +56,7 @@ struct Index {
       .width(56)
       .height(56)
       .margin({ right: 20, bottom: 16 })
-      .backgroundColor('#317bd4')
+      .backgroundColor($r('app.color.theme_color'))
       .onClick(() => this.counter++)
     }.alignContent(Alignment.BottomEnd)
 
@@ -62,13 +65,15 @@ struct Index {
 
 @Component
 struct AppBar {
-  private title: string = '';
+  private title: string | Resource = '';
 
   @Builder
-  leadingBuilder() {}
+  leadingBuilder() {
+  }
 
   @Builder
-  tailingBuilder() {}
+  tailingBuilder() {
+  }
 
   @BuilderParam leading: () => void = this.leadingBuilder;
   @BuilderParam tailing: () => void = this.tailingBuilder;
@@ -77,14 +82,14 @@ struct AppBar {
     Row() {
       this.leading()
       Text(this.title)
-        .fontSize(20).fontWeight(FontWeight.Bold)
+        .fontSize($r('app.float.app_bar_title_size')).fontWeight(FontWeight.Bold)
         .fontColor($r('sys.color.white'))
       this.tailing()
     }
-    .backgroundColor('#317bd4')
+    .backgroundColor($r('app.color.theme_color'))
     .width('100%')
     .height(56)
-    .padding({ left: 20, right: 20 })
+    .padding({ left: 8, right: 8 })
     .justifyContent(FlexAlign.SpaceBetween)
   }
 }

@@ -1,0 +1,32 @@
+{
+  "float": [
+    {
+      "name": "mini_text_size",
+      "value": "10fp"
+    },
+    {
+      "name": "small_text_size",
+      "value": "12fp"
+    },
+    {
+      "name": "normal_text_size",
+      "value": "14fp"
+    },
+    {
+      "name": "lager_text_size",
+      "value": "16fp"
+    },
+    {
+      "name": "counter_value_size",
+      "value": "36fp"
+    },
+    {
+      "name": "counter_desc_size",
+      "value": "18fp"
+    },
+    {
+      "name": "app_bar_title_size",
+      "value": "20fp"
+    }
+  ]
+}

@@ -11,6 +11,14 @@
     {
       "name": "EntryAbility_label",
       "value": "label"
+    },
+    {
+      "name": "counter_title",
+      "value": "计数器"
+    },
+    {
+      "name": "counter_tips",
+      "value": "下面是你点击按钮的次数:"
     }
   ]
 }
