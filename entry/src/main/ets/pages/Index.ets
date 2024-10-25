@@ -1,4 +1,5 @@
 import { CounterPage } from "./CounterPage";
+import { GuessingPage } from './GuessingPage';
 
 @Entry
 @Component
@@ -8,7 +9,8 @@ struct Index {
 
   build() {
     Column() {
-      CounterPage()
+      // CounterPage()
+      GuessingPage()
     }.padding({ bottom: px2vp(this.bottomRectHeight) })
 
   }
