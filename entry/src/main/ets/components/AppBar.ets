@@ -1,4 +1,3 @@
-
 @Component
 export struct AppBar {
   private title: string | Resource  = '';

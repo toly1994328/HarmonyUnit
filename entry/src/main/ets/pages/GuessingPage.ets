@@ -4,6 +4,9 @@ import { AppBar } from '../components/AppBar'
 @Component
 export struct GuessingPage {
   @State guessing: boolean = false;
+  @State secret: number = 0;
+  @State input: string = '';
+  @State result: CheckResult = CheckResult.none;
 
   @Builder
   tailing() {
@@ -12,14 +15,21 @@ export struct GuessingPage {
         .width(24).height(24)
         .fillColor(Color.Blue)
     }
-    .width(36).height(36)
+    .width(36)
+    .height(36)
     .backgroundColor(Color.Transparent)
+    .enabled(this.guessing)
+    .onClick(() => this.checkResult())
   }
 
   @Builder
   titleInput() {
-    TextInput({ placeholder: '输入 0~99 数字' })
+    TextInput({
+      placeholder: '输入 0~99 数字',
+      text: $$this.input,
+    })
       .layoutWeight(1)
+      .onSubmit(() => this.checkResult())
       .margin({ left: 8, right: 8 })
       .backgroundColor('#F3F6F9')
   }
@@ -33,8 +43,34 @@ export struct GuessingPage {
     .backgroundColor(Color.Transparent)
   }
 
-  gen() {
+  checkResult(): void {
+    if (this.input === '' || !this.guessing) {
+      return;
+    }
+    const guess: number = Number(this.input);
+    if (Number.isNaN(guess)) {
+      return;
+    }
+    const diff = guess - this.secret;
 
+    if (diff == 0) {
+      this.result = CheckResult.equal
+      this.guessing = false;
+      this.input =''
+    }
+    if (diff > 0) {
+      this.result = CheckResult.bigger
+    }
+    if (diff < 0) {
+      this.result = CheckResult.smaller
+    }
+  }
+
+  start(): void {
+    this.guessing = true;
+    this.secret = Math.floor(Math.random() * 100);
+    this.result = CheckResult.none;
+    this.input =''
   }
 
   @Builder
@@ -48,26 +84,9 @@ export struct GuessingPage {
     .width(56)
     .height(56)
     .margin({ right: 20, bottom: 16 })
-    // .backgroundColor($r('app.color.theme_color'))
     .backgroundColor(this.guessing ? '#9e9e9c' : $r('app.color.theme_color'))
     .enabled(!this.guessing)
-    .onClick(() => this.gen())
-  }
-
-  @Builder
-  buildCounterDisplay(){
-    if(!this.guessing)
-    Column() {
-      Text('点击生成随机数')
-      Text('0').fontSize(46).fontColor('#727272')
-    }.width('100%').height('100%')
-    .justifyContent(FlexAlign.Center)
-    else
-    Column() {
-      Text('开始输入猜数字吧~')
-      Text('**').fontSize(46).fontColor('#727272')
-    }.width('100%').height('100%')
-    .justifyContent(FlexAlign.Center)
+    .onClick(() => this.start())
   }
 
   build() {
@@ -75,17 +94,22 @@ export struct GuessingPage {
       AppBar(
         {
           color: $r('app.color.app_title_bg_color'),
-          tailing: this.tailing,
+          tailing: () => {this.tailing()},
           leading: this.leading,
-          titleSlot: this.titleInput,
+          titleSlot: () => {this.titleInput()},
         }
       )
       Stack() {
         Column() {
-          ResultDisplay({ result: CheckResult.bigger })
-          ResultDisplay({ result: CheckResult.none })
+          ResultDisplay({ result: this.solve(CheckResult.bigger) })
+          ResultDisplay({ result: this.solve(CheckResult.smaller) })
         }
-        this.buildCounterDisplay()
+
+        InfomationDisplay({
+          result: this.result,
+          secret: this.secret,
+          guessing: this.guessing,
+        })
         this.button()
       }.layoutWeight(1)
       .width('100%')
@@ -93,6 +117,45 @@ export struct GuessingPage {
 
     }.width('100%').height('100%')
 
+  }
+
+  solve(result: CheckResult): CheckResult {
+    if (this.result == result) {
+      return result;
+    }
+    return CheckResult.none;
+  }
+}
+
+@Component
+struct InfomationDisplay {
+  @Prop result: CheckResult = CheckResult.none;
+  @Prop guessing: boolean = false;
+  @Prop secret: number = 0;
+
+  info(): string {
+    if (this.result == CheckResult.equal) {
+      return '恭喜你猜对啦~';
+    }
+    if (!this.guessing) {
+      return '点击生成随机数';
+    }
+    return '开始输入猜数字吧~';
+  }
+
+  value(): string {
+    if (this.guessing) {
+      return '**';
+    }
+    return this.secret.toString();
+  }
+
+  build() {
+    Column() {
+      Text(this.info())
+      Text(this.value()).fontSize(46).fontColor('#727272')
+    }.width('100%').height('100%')
+    .justifyContent(FlexAlign.Center)
   }
 }
 
@@ -126,7 +189,7 @@ function resultColor(result: CheckResult): ResourceColor {
 
 @Component
 struct ResultDisplay {
-  private result: CheckResult = CheckResult.none;
+  @Prop result: CheckResult = CheckResult.none;
 
   build() {
     Column() {
