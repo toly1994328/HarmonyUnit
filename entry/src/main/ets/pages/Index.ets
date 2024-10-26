@@ -1,5 +1,5 @@
 import { CounterPage } from "./CounterPage";
-import { GuessingPage } from './GuessingPage';
+import { GuessingPage } from './guessing/view/GuessingPage';
 
 @Entry
 @Component
