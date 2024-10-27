@@ -65,15 +65,19 @@ export struct GuessingPage {
       AppBar(
         {
           color: $r('app.color.app_title_bg_color'),
-          tailing: () => {this.tailing()},
+          tailing: () => {
+            this.tailing()
+          },
           leading: this.leading,
-          titleSlot: () => {this.titleInput()},
+          titleSlot: () => {
+            this.titleInput()
+          },
         }
       )
       Stack() {
         Column() {
-          ResultDisplay({ result: this.solve(CheckResult.bigger) })
-          ResultDisplay({ result: this.solve(CheckResult.smaller) })
+          ResultDisplay({ result: this.solve(CheckResult.bigger), guessCount: this.state.guessCount })
+          ResultDisplay({ result: this.solve(CheckResult.smaller), guessCount: this.state.guessCount })
         }
 
         InfomationDisplay({

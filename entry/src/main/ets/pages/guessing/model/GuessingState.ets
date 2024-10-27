@@ -1,7 +1,9 @@
 import { CheckResult } from "./CheckResult";
+import inputMethod from '@ohos.inputMethod';
 
-export class GuessingState{
+export class GuessingState {
   guessing: boolean = false;
+  guessCount: number = 0;
   secret: number = 0;
   input: string = '';
   result: CheckResult = CheckResult.none;
@@ -19,7 +21,7 @@ export class GuessingState{
     if (diff == 0) {
       this.result = CheckResult.equal
       this.guessing = false;
-      this.input =''
+      this.input = ''
     }
     if (diff > 0) {
       this.result = CheckResult.bigger
@@ -27,13 +29,15 @@ export class GuessingState{
     if (diff < 0) {
       this.result = CheckResult.smaller
     }
+    this.guessCount++;
+    inputMethod.getController().stopInputSession();
   }
 
   start(): void {
     this.guessing = true;
     this.secret = Math.floor(Math.random() * 100);
     this.result = CheckResult.none;
-    this.input =''
+    this.input = '';
+    this.guessCount = 0;
   }
-
 }

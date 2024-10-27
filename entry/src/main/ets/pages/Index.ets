@@ -1,5 +1,6 @@
 import { CounterPage } from "./CounterPage";
 import { GuessingPage } from './guessing/view/GuessingPage';
+import { PlaygroundPage } from './playground/PlaygroundPage';
 
 @Entry
 @Component
@@ -11,6 +12,7 @@ struct Index {
     Column() {
       // CounterPage()
       GuessingPage()
+      // PlaygroundPage()
     }.padding({ bottom: px2vp(this.bottomRectHeight) })
 
   }
