@@ -1,8 +1,7 @@
 @Component
 export struct AppBar {
-  private title: string | Resource  = '';
-  private color? : ResourceColor;
-
+  private title: string | Resource = '';
+  private color?: ResourceColor;
   @StorageProp('topRectHeight')
   topRectHeight: number = 0;
 
