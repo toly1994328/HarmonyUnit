@@ -20,24 +20,52 @@ export struct MuYuPage {
   toHistory(): void {}
 
   @Builder
-  valueDisplay(){
+  buildButtons(){
     Column() {
-      Text('功德数: 0').fontSize('24fp').fontWeight(FontWeight.Bold)
+      Button({ type: ButtonType.Normal, stateEffect: true }) {
+        SymbolGlyph($r('sys.symbol.music_fill'))
+          .fontSize(20)
+          .fontColor([Color.White])
+          .fontWeight(FontWeight.Bold)
+      }.margin({ bottom: 12 }).width(36).height(36).borderRadius(4)
+
+      Button({ type: ButtonType.Normal, stateEffect: true }) {
+        SymbolGlyph($r('sys.symbol.picture_fill'))
+          .fontSize(20)
+          .fontColor([Color.White])
+          .fontWeight(FontWeight.Bold)
+      }.width(36).height(36).borderRadius(4)
+    }.position({
+      top: 12,
+      right: 12
+    })
+  }
+
+  @Builder
+  valueDisplay(){
+    Stack(){
+      Column() {
+        Text('功德数: 0').fontSize('24fp').fontWeight(FontWeight.Bold)
+      }
+      .alignItems(HorizontalAlign.Center)
+      .justifyContent(FlexAlign.Center)
+      this.buildButtons()
     }
-    .alignItems(HorizontalAlign.Center)
-    .justifyContent(FlexAlign.Center)
     .layoutWeight(1)
     .width('100%')
   }
 
   @Builder
   muyuDisplay(){
-    Column() {
-      Image($r('app.media.muyu')).width(200)
+    Stack(){
+      Column() {
+        Image($r('app.media.muyu')).width(200)
+      }
+      .alignItems(HorizontalAlign.Center)
+      .justifyContent(FlexAlign.Center)
+      Text('功德 +1').translate({ y: -80 })
     }
     .width('100%')
-    .alignItems(HorizontalAlign.Center)
-    .justifyContent(FlexAlign.Center)
     .layoutWeight(1)
   }
 
