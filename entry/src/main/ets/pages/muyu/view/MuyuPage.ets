@@ -1,5 +1,6 @@
 import { AppBar } from '../../../components/AppBar'
 import { MuyuBloc } from '../bloc/MuyuBloc';
+import { AnimaValue } from './AnimaValue';
 
 @Component
 export struct MuYuPage {
@@ -73,6 +74,8 @@ export struct MuYuPage {
       }
       .alignItems(HorizontalAlign.Center)
       .justifyContent(FlexAlign.Center)
+
+      AnimaValue({ counter: this.model.counter })
     }
     .width('100%')
     .layoutWeight(1)
