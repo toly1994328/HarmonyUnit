@@ -1,10 +1,17 @@
 import { AppBar } from '../../../components/AppBar'
+import { MuyuBloc } from '../bloc/MuyuBloc';
 
 @Component
 export struct MuYuPage {
+  @State model: MuyuBloc = new MuyuBloc();
+
   @Builder
   title() {
     Text("电子木鱼").fontSize('18fp').fontWeight(FontWeight.Bold).margin({ left: 12 })
+  }
+
+  aboutToDisappear(): void {
+    this.model.release();
   }
 
   @Builder
@@ -17,10 +24,11 @@ export struct MuYuPage {
     .onClick(() => this.toHistory())
   }
 
-  toHistory(): void {}
+  toHistory(): void {
+  }
 
   @Builder
-  buildButtons(){
+  buildButtons() {
     Column() {
       Button({ type: ButtonType.Normal, stateEffect: true }) {
         SymbolGlyph($r('sys.symbol.music_fill'))
@@ -42,13 +50,14 @@ export struct MuYuPage {
   }
 
   @Builder
-  valueDisplay(){
-    Stack(){
+  valueDisplay() {
+    Stack() {
       Column() {
-        Text('功德数: 0').fontSize('24fp').fontWeight(FontWeight.Bold)
+        Text(`功德数: ${this.model.counter}`).fontSize('24fp').fontWeight(FontWeight.Bold)
       }
       .alignItems(HorizontalAlign.Center)
       .justifyContent(FlexAlign.Center)
+
       this.buildButtons()
     }
     .layoutWeight(1)
@@ -56,14 +65,14 @@ export struct MuYuPage {
   }
 
   @Builder
-  muyuDisplay(){
-    Stack(){
+  muyuDisplay() {
+    Stack() {
       Column() {
         Image($r('app.media.muyu')).width(200)
+          .onClick(() => this.model.tick())
       }
       .alignItems(HorizontalAlign.Center)
       .justifyContent(FlexAlign.Center)
-      Text('功德 +1').translate({ y: -80 })
     }
     .width('100%')
     .layoutWeight(1)
