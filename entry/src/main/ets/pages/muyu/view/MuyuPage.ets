@@ -1,6 +1,8 @@
 import { AppBar } from '../../../components/AppBar'
 import { MuyuBloc } from '../bloc/MuyuBloc';
 import { AnimaValue } from './AnimaValue';
+import { MuyuSelectorSheet } from './MuyuSelectorSheet';
+import { VoiceSelectorSheet } from './VoiceSelectorSheet';
 
 @Component
 export struct MuYuPage {
@@ -36,7 +38,12 @@ export struct MuYuPage {
           .fontSize(20)
           .fontColor([Color.White])
           .fontWeight(FontWeight.Bold)
-      }.margin({ bottom: 12 }).width(36).height(36).borderRadius(4)
+      }
+      .width(36)
+      .height(36)
+      .margin({ bottom: 12 })
+      .borderRadius(4)
+      .onClick(() => this.openBottomSheet(true))
 
       Button({ type: ButtonType.Normal, stateEffect: true }) {
         SymbolGlyph($r('sys.symbol.picture_fill'))
@@ -44,10 +51,17 @@ export struct MuYuPage {
           .fontColor([Color.White])
           .fontWeight(FontWeight.Bold)
       }.width(36).height(36).borderRadius(4)
+      .onClick(() => this.openBottomSheet(false))
+
     }.position({
       top: 12,
       right: 12
     })
+  }
+
+  openBottomSheet(music: boolean) {
+    this.isShowSheet = true;
+    this.isMusic = music;
   }
 
   @Builder
@@ -69,7 +83,7 @@ export struct MuYuPage {
   muyuDisplay() {
     Stack() {
       Column() {
-        Image($r('app.media.muyu')).width(200)
+        Image(this.model.imageSrc()).width(200)
           .onClick(() => this.model.tick())
       }
       .alignItems(HorizontalAlign.Center)
@@ -81,6 +95,38 @@ export struct MuYuPage {
     .layoutWeight(1)
   }
 
+  @State isMusic: boolean = false;
+
+  @Builder sheetBuilder() {
+    Column() {
+      if (this.isMusic) {
+        VoiceSelectorSheet({
+          activeIndex: this.model.activeAudioIndex,
+          options: this.model.audioOptions,
+          onSelected: (index) => {
+            this.model.changeVoice(index);
+            this.isShowSheet = false;
+          },
+          onPreview: (index) => {
+            this.model.previewVoice(index);
+          }
+        })
+      } else {
+        MuyuSelectorSheet({
+          activeIndex: this.model.activeImageIndex,
+          options: this.model.imageOptions,
+          onSelected: (index) => {
+            this.model.changeImage(index);
+            this.isShowSheet = false;
+          }
+        }
+        )
+      }
+    }
+  }
+
+  @State isShowSheet: boolean = false;
+
   build() {
     Column() {
       AppBar({ titleSlot: this.title, tailing: (): void => this.tailing() }
@@ -88,5 +134,9 @@ export struct MuYuPage {
       this.valueDisplay()
       this.muyuDisplay()
     }.backgroundColor('#fafafa')
+    .bindSheet($$this.isShowSheet, this.sheetBuilder(), {
+      height: 400,
+      showClose: false,
+    })
   }
 }
