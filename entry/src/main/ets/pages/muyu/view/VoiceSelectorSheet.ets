@@ -1,4 +1,4 @@
-import { AudioOption } from "../model/audio_option";
+import { AudioOption } from "../model/AudioOption";
 
 type IndexSelector = (index: number) => void;
 

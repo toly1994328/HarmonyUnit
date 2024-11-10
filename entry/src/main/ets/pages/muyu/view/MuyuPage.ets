@@ -4,9 +4,16 @@ import { AnimaValue } from './AnimaValue';
 import { MuyuSelectorSheet } from './MuyuSelectorSheet';
 import { VoiceSelectorSheet } from './VoiceSelectorSheet';
 
+@Builder
+export function pageBuilder(name: string, param: Object) {
+  MuYuPage()
+}
+
+
 @Component
 export struct MuYuPage {
   @State model: MuyuBloc = new MuyuBloc();
+  @Consume('NavPathStack') pageStack: NavPathStack;
 
   @Builder
   title() {
@@ -27,7 +34,8 @@ export struct MuYuPage {
     .onClick(() => this.toHistory())
   }
 
-  toHistory(): void {
+  toHistory() {
+    this.pageStack.pushPathByName('merit_record', this.model.records.reverse());
   }
 
   @Builder
@@ -83,13 +91,13 @@ export struct MuYuPage {
   muyuDisplay() {
     Stack() {
       Column() {
-        Image(this.model.imageSrc()).width(200)
+        Image(this.model.imageSrc()).height(200)
           .onClick(() => this.model.tick())
       }
       .alignItems(HorizontalAlign.Center)
       .justifyContent(FlexAlign.Center)
 
-      AnimaValue({ counter: this.model.counter })
+      AnimaValue({ record: this.model.lastRecord })
     }
     .width('100%')
     .layoutWeight(1)
@@ -97,7 +105,8 @@ export struct MuYuPage {
 
   @State isMusic: boolean = false;
 
-  @Builder sheetBuilder() {
+  @Builder
+  sheetBuilder() {
     Column() {
       if (this.isMusic) {
         VoiceSelectorSheet({
@@ -128,15 +137,20 @@ export struct MuYuPage {
   @State isShowSheet: boolean = false;
 
   build() {
-    Column() {
-      AppBar({ titleSlot: this.title, tailing: (): void => this.tailing() }
-      ).backgroundColor($r('sys.color.white'))
-      this.valueDisplay()
-      this.muyuDisplay()
-    }.backgroundColor('#fafafa')
-    .bindSheet($$this.isShowSheet, this.sheetBuilder(), {
-      height: 400,
-      showClose: false,
-    })
+    NavDestination(){
+      Column() {
+        AppBar({ titleSlot: this.title, tailing: (): void => this.tailing() }
+        ).backgroundColor($r('sys.color.white'))
+        this.valueDisplay()
+        this.muyuDisplay()
+      }
+      .height('100%')
+      .backgroundColor('#fafafa')
+      .bindSheet($$this.isShowSheet, this.sheetBuilder(), {
+        height: 400,
+        showClose: false,
+      })
+    }.hideTitleBar(true)
+
   }
 }

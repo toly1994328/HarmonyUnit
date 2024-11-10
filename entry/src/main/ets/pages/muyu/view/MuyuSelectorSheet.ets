@@ -1,4 +1,4 @@
-import { ImageOption } from "../model/image_option";
+import { ImageOption } from "../model/ImageOption";
 
 type IndexSelector = (index: number) => void;
 

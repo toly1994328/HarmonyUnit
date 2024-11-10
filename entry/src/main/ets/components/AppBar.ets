@@ -11,6 +11,7 @@ export struct AppBar {
 
   @Builder
   tailingBuilder() {
+    Shape().width(28)
   }
 
   @Builder

@@ -1,21 +1,17 @@
-import { CounterPage } from "./CounterPage";
-import { GuessingPage } from './guessing/view/GuessingPage';
-import { PlaygroundPage } from './playground/PlaygroundPage';
-import { MuYuPage } from './muyu/view/MuyuPage';
-
 @Entry
 @Component
 struct Index {
   @StorageProp('bottomRectHeight')
   bottomRectHeight: number = 0;
+  @Provide('NavPathStack') pageStack: NavPathStack = new NavPathStack()
 
   build() {
-    Column() {
-      // CounterPage()
-      // GuessingPage()
-      MuYuPage()
-      // PlaygroundPage()
-    }.padding({ bottom: px2vp(this.bottomRectHeight) })
+    Navigation(this.pageStack){}
+      .padding({ bottom: px2vp(this.bottomRectHeight) })
+      .onAppear(() => this.pushHome())
+  }
 
+  pushHome(): void {
+    this.pageStack.pushPathByName("muyu", null, false);
   }
 }

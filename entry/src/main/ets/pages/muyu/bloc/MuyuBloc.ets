@@ -1,8 +1,8 @@
-import { BusinessError } from '@kit.BasicServicesKit';
 import { audio } from '@kit.AudioKit';
 import { media } from '@kit.MediaKit';
-import { AudioOption } from '../model/audio_option';
-import { ImageOption } from '../model/image_option';
+import { AudioOption } from '../model/AudioOption';
+import { ImageOption } from '../model/ImageOption';
+import { MeritRecord } from '../model/MeritRecord';
 
 export class MuyuBloc {
   @Track counter: number = 0;
@@ -27,9 +27,7 @@ export class MuyuBloc {
   }
 
   private soundIds: number[] = [];
-
   @Track activeAudioIndex: number = 0;
-
   @Track audioOptions: AudioOption[] = [
     new AudioOption('空灵弥音', 'muyu_1.mp3'),
     new AudioOption('落子禅定', 'muyu_2.mp3'),
@@ -84,11 +82,26 @@ export class MuyuBloc {
     });
   }
 
+  @Track records: MeritRecord[] = [];
+  @Track lastRecord?: MeritRecord | null;
+
   tick(): void {
     if (!this.ready) {
       return;
     }
     this.player?.play(this.soundIds[this.activeAudioIndex]);
-    this.counter++;
+
+    let image: ImageOption = this.imageOptions[this.activeImageIndex];
+    let audio: AudioOption = this.audioOptions[this.activeAudioIndex];
+    let value = Math.floor(Math.random() * (image.max - image.min + 1)) + image.min;
+
+    this.lastRecord = new MeritRecord({
+      timestamp: Date.now(),
+      value: value,
+      image: image.src,
+      audio: audio.name,
+    });
+    this.records.push(this.lastRecord!);
+    this.counter += value;
   }
 }

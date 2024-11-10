@@ -1,10 +1,12 @@
+import { MeritRecord } from "../model/MeritRecord";
+
 @Component
 export struct AnimaValue {
-  @Prop @Watch('startAnimation') counter: number;
+  @Prop @Watch('startAnimation') record?: MeritRecord | null;
   @State rate: number = 0;
 
   build() {
-    Text('功德 +1')
+    Text(`功德 +${this.record?.value ?? 0}`)
       .fontSize(8 + this.rate * 8)
       .translate({ y: -60 - this.rate * 64 })
       .opacity(this.rate * 0.7)
