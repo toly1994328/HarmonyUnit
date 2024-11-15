@@ -26,15 +26,18 @@ export struct AppBar {
   @BuilderParam titleSlot: () => void = this.titleBuilder;
 
   build() {
-    Row() {
-      this.leading()
+    Stack(){
+      Row() {
+        this.leading()
+        this.tailing()
+      }
+      .backgroundColor(this.color)
+      .width('100%')
+      .height(56 )
+      .padding({ left: 8, right: 8, })
+      .justifyContent(FlexAlign.SpaceBetween)
       this.titleSlot()
-      this.tailing()
-    }
-    .backgroundColor(this.color)
-    .width('100%')
-    .height(56 + px2vp(this.topRectHeight))
-    .padding({ left: 8, right: 8, top: px2vp(this.topRectHeight) })
-    .justifyContent(FlexAlign.SpaceBetween)
+    }.padding({ top: px2vp(this.topRectHeight)})
+
   }
 }

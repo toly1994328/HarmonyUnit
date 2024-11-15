@@ -1,3 +1,6 @@
+import { CounterPage } from './CounterPage';
+import { Painter } from './painter/view/Painter';
+
 @Entry
 @Component
 struct Index {
@@ -6,9 +9,12 @@ struct Index {
   @Provide('NavPathStack') pageStack: NavPathStack = new NavPathStack()
 
   build() {
-    Navigation(this.pageStack){}
-      .padding({ bottom: px2vp(this.bottomRectHeight) })
-      .onAppear(() => this.pushHome())
+    Column(){
+      Painter()
+    }
+    // Navigation(this.pageStack){}
+    //   .padding({ bottom: px2vp(this.bottomRectHeight) })
+    //   .onAppear(() => this.pushHome())
   }
 
   pushHome(): void {
