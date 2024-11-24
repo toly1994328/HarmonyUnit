@@ -1,5 +1,7 @@
 import { AppBar } from "../../../components/AppBar"
 import { PainterBloc } from "../bloc/PainterBloc"
+import { ColorSelector } from "./ColorSelector"
+import { StorkWidthSelector } from "./LineSelector"
 
 @Component
 export struct Painter {
@@ -35,26 +37,43 @@ export struct Painter {
   @State model: PainterBloc = new PainterBloc();
 
   build() {
-    Column() {
-      AppBar({
-        titleSlot: this.title,
-        tailing: () => {
-          this.clearButton()
-        },
-        leading: () => {
-          this.actionsButton()
-        },
-      })
-      Canvas(this.model.context)
-        .width('100%')
-        .layoutWeight(1)
-        .backgroundColor('#fafafa')
-        .gesture(
-          PanGesture()
-            .onActionStart((e) => this.onPanStart(e))
-            .onActionUpdate((e) => this.onPanUpdate(e)),
-        )
+    Stack() {
+      Column() {
+        AppBar({
+          titleSlot: this.title,
+          tailing: () => {
+            this.clearButton()
+          },
+          leading: () => {
+            this.actionsButton()
+          },
+        })
+        Canvas(this.model.context)
+          .width('100%')
+          .layoutWeight(1)
+          .backgroundColor('#fafafa')
+          .gesture(
+            PanGesture()
+              .onActionStart((e) => this.onPanStart(e))
+              .onActionUpdate((e) => this.onPanUpdate(e)),
+          )
+      }
+      Row(){
+        ColorSelector({
+          colors: this.model.supportColors,
+          activeIndex: this.model.colorIndex,
+          onSelected: (index) => {this.model.changeColor(index);}
+        }).layoutWeight(1)
+        StorkWidthSelector({
+          stokeWidths: this.model.supportStorkWidths,
+          activeIndex: this.model.storkWidthIndex,
+          color:  this.model.currentColor(),
+          onSelected: (index) => {this.model.changeStorkWidths(index);}
+        }).margin({left:8})
+      }.padding({left:12,right:12}).position({bottom:24})
+
     }
+
     .width('100%').height('100%')
   }
 
@@ -88,7 +107,9 @@ export struct Painter {
         cornerRadius: 8,
         alignment: DialogAlignment.Center,
         gridCount: 4,
-        primaryButton: { value: '取消', action: () => {} },
+        primaryButton: {
+          value: '取消', action: () => {}
+        },
         secondaryButton: {
           enabled: true,
           defaultFocus: true,

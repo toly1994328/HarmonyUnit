@@ -1,14 +1,46 @@
 import { Line, Point } from '../model/Line';
 
 export class PainterBloc {
+  // 支持的线粗
+  @Track supportStorkWidths: number[] = [1, 2, 4, 6, 8, 10];
+  @Track supportColors: string[] =
+    ['#ff000000', '#fff44336', '#ffff9800', '#ffffeb3b', '#ff4caf50', '#ff2196f3', '#ff3f51b5', '#ff9c27b0',
+      '#ffe91e63',
+      '#ff9e9e9e', '#ffff5252', '#ffffab40', '#ffffff00', '#ff69f0ae', '#ff448aff', '#ff536dfe', '#ffe040fb',
+      '#ffff4081',
+      '#889e9e9e', '#88ff5252', '#88ffab40', '#88ffff00', '#8869f0ae', '#88448aff', '#88536dfe', '#88e040fb',
+      '#88ff4081',
+      '#449e9e9e', '#44ff5252', '#44ffab40', '#44ffff00', '#4469f0ae', '#44448aff', '#44536dfe', '#44e040fb',
+      '#44ff4081',
+    ];
+  @Track colorIndex: number = 0;
+  @Track storkWidthIndex: number = 0;
   @Track lines: Line[] = []; // 线列表
 
   private settings: RenderingContextSettings = new RenderingContextSettings(true);
   @Track context: CanvasRenderingContext2D = new CanvasRenderingContext2D(this.settings);
 
+  currentColor(): string {
+    return this.supportColors[this.colorIndex]
+  }
+
+  currentStorkWidths(): number {
+    return this.supportStorkWidths[this.storkWidthIndex]
+  }
+
+  changeStorkWidths(index: number) {
+    this.storkWidthIndex = index
+  }
+
+  changeColor(index: number) {
+    this.colorIndex = index
+  }
+
   // 开始平移时，添加新线
   newLine(x: number, y: number) {
-    this.lines.push(new Line([new Point(x, y)]));
+    let currentColor = this.supportColors[this.colorIndex];
+    let currentStorkWidths = this.supportStorkWidths[this.storkWidthIndex];
+    this.lines.push(new Line([new Point(x, y)], currentColor, currentStorkWidths));
   }
 
   // 平移更新时，为新线添加点
@@ -32,7 +64,7 @@ export class PainterBloc {
 
   ///根据点集绘制线
   drawLine(canvas: CanvasRenderingContext2D, line: Line) {
-    canvas.fillStyle = line.color;
+    canvas.strokeStyle = line.color;
     canvas.lineWidth = line.strokeWidth;
     canvas.beginPath();
     let count = line.points.length;
