@@ -17,8 +17,36 @@ export class PainterBloc {
   @Track storkWidthIndex: number = 0;
   @Track lines: Line[] = []; // 线列表
 
+  @Track lineCount = 0;
+  @Track historyLineCount = 0;
+  @Track historyLines: Line[] = []; //回退历史线列表
+
   private settings: RenderingContextSettings = new RenderingContextSettings(true);
   @Track context: CanvasRenderingContext2D = new CanvasRenderingContext2D(this.settings);
+
+  back(): void {
+    let line = this.lines.pop()
+    if (line) {
+      this.historyLines.push(line);
+      this.updateCount();
+    }
+    this.paint(this.context);
+  }
+
+  private updateCount(){
+    this.lineCount = this.lines.length;
+    this.historyLineCount = this.historyLines.length;
+  }
+
+  revocation(): void {
+    let line = this.historyLines.pop()
+    if (line) {
+      this.lines.push(line);
+      this.updateCount();
+    }
+    this.paint(this.context);
+  }
+
 
   currentColor(): string {
     return this.supportColors[this.colorIndex]
@@ -41,6 +69,7 @@ export class PainterBloc {
     let currentColor = this.supportColors[this.colorIndex];
     let currentStorkWidths = this.supportStorkWidths[this.storkWidthIndex];
     this.lines.push(new Line([new Point(x, y)], currentColor, currentStorkWidths));
+    this.lineCount++;
   }
 
   // 平移更新时，为新线添加点
@@ -51,6 +80,8 @@ export class PainterBloc {
 
   clear(): void {
     this.lines = [];
+    this.historyLines = [];
+    this.updateCount();
     this.paint(this.context);
   }
 

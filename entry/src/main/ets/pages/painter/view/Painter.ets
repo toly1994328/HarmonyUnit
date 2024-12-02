@@ -25,12 +25,18 @@ export struct Painter {
       Button() {
         SymbolGlyph($r('sys.symbol.undo')).fontSize(24)
       }
-      .width(36).height(36).backgroundColor(Color.Transparent)
+      .width(36).height(36)
+      .backgroundColor(Color.Transparent)
+      .enabled(this.model.lineCount > 0)
+      .onClick(() => this.model.back())
 
       Button() {
         SymbolGlyph($r('sys.symbol.redo')).fontSize(24)
       }
-      .width(36).height(36).backgroundColor(Color.Transparent)
+      .width(36).height(36)
+      .backgroundColor(Color.Transparent)
+      .enabled(this.model.historyLineCount > 0)
+      .onClick(() => this.model.revocation())
     }
   }
 
@@ -58,19 +64,24 @@ export struct Painter {
               .onActionUpdate((e) => this.onPanUpdate(e)),
           )
       }
-      Row(){
+
+      Row() {
         ColorSelector({
           colors: this.model.supportColors,
           activeIndex: this.model.colorIndex,
-          onSelected: (index) => {this.model.changeColor(index);}
+          onSelected: (index) => {
+            this.model.changeColor(index);
+          }
         }).layoutWeight(1)
         StorkWidthSelector({
           stokeWidths: this.model.supportStorkWidths,
           activeIndex: this.model.storkWidthIndex,
-          color:  this.model.currentColor(),
-          onSelected: (index) => {this.model.changeStorkWidths(index);}
-        }).margin({left:8})
-      }.padding({left:12,right:12}).position({bottom:24})
+          color: this.model.currentColor(),
+          onSelected: (index) => {
+            this.model.changeStorkWidths(index);
+          }
+        }).margin({ left: 8 })
+      }.padding({ left: 12, right: 12 }).position({ bottom: 24 })
 
     }
 
@@ -108,7 +119,8 @@ export struct Painter {
         alignment: DialogAlignment.Center,
         gridCount: 4,
         primaryButton: {
-          value: '取消', action: () => {}
+          value: '取消', action: () => {
+          }
         },
         secondaryButton: {
           enabled: true,
