@@ -1,7 +1,3 @@
----
-theme: cyanosis
----
-
 #### 鸿蒙纪元 · 系列前言:
 
 **《鸿蒙纪元》** 是 [张风捷特烈](https://juejin.cn/user/149189281194766) 计划打造的一套 HarmonyOS 开发系列教程合集。致力于创作优质的鸿蒙原生学习资源，帮助开发者进入纯血鸿蒙的开发之中。本系列的所有代码将开源在 [HarmonyUnit](https://github.com/toly1994328/HarmonyUnit) 项目中:

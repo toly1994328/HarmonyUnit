@@ -33,7 +33,7 @@ export class PainterBloc {
     this.paint(this.context);
   }
 
-  private updateCount(){
+  private updateCount() {
     this.lineCount = this.lines.length;
     this.historyLineCount = this.historyLines.length;
   }
@@ -74,6 +74,11 @@ export class PainterBloc {
 
   // 平移更新时，为新线添加点
   updateLine(x: number, y: number) {
+    let lastLine = this.lines[this.lines.length-1];
+    let lastPoint = lastLine.points[lastLine.points.length-1]
+    let distance = Math.sqrt(Math.pow((x - lastPoint.x), 2) + Math.pow((y - lastPoint.y), 2))
+    if (distance < 5) return;
+    console.log(`==onPanUpdate:(${x},${y})========`);
     this.lines[this.lines.length-1].points.push(new Point(x, y));
     this.paint(this.context);
   }
