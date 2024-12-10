@@ -18,7 +18,7 @@ export struct AppBar {
   titleBuilder() {
     Text(this.title)
       .fontSize($r('app.float.app_bar_title_size')).fontWeight(FontWeight.Bold)
-      .fontColor($r('sys.color.white'))
+      .fontColor($r('sys.color.black'))
   }
 
   @BuilderParam leading: () => void = this.leadingBuilder;
@@ -29,6 +29,7 @@ export struct AppBar {
     Stack(){
       Row() {
         this.leading()
+        this.titleSlot()
         this.tailing()
       }
       .backgroundColor(this.color)
@@ -36,8 +37,6 @@ export struct AppBar {
       .height(56 )
       .padding({ left: 8, right: 8, })
       .justifyContent(FlexAlign.SpaceBetween)
-      this.titleSlot()
     }.padding({ top: px2vp(this.topRectHeight)})
-
   }
 }

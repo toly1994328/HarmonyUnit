@@ -1,4 +1,4 @@
-import { AppBar } from "../components/AppBar";
+import { AppBar } from "../../components/AppBar";
 
 @Component
 export struct CounterPage{
@@ -13,7 +13,7 @@ export struct CounterPage{
     Button(){
       Image($r('app.media.more'))
         .width(24).height(24)
-        .fillColor(Color.White)
+        .fillColor(Color.Black)
     }
     .width(36).height(36)
     .backgroundColor(Color.Transparent)
@@ -39,9 +39,8 @@ export struct CounterPage{
             .fontSize($r('app.float.counter_value_size'))
             .fontColor('#2e3032')
             .margin({ top: 10 })
-        }
+        }.layoutWeight(1)
         .width('100%')
-        .height('100%')
         .justifyContent(FlexAlign.Center)
       }
       .alignItems(HorizontalAlign.Start)

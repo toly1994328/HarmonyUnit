@@ -9,6 +9,14 @@ import { ResultDisplay } from './ResultDisplay';
 export struct GuessingPage {
   @State state: GuessingState = new GuessingState();
 
+  aboutToAppear(): void {
+    console.log("aboutToAppear")
+  }
+
+  aboutToDisappear(): void {
+    console.log("aboutToDisappear")
+  }
+
   @Builder
   tailing() {
     Button() {

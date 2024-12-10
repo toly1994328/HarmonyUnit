@@ -1,7 +1,7 @@
 {
   "app": {
     "bundleName": "com.toly1994.harmony.unit",
-    "patchVersionCode": 2000095,
+    "patchVersionCode": 2000119,
     "versionCode": 1000000
   },
   "module": {
